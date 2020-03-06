@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>登录界面</title>
+
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <style type="text/css">
+        body,
+        div {
+            margin: 0px;
+            /*  元素外间距*/
+        }
+        
+        .comm_top {
+            height: 90px;
+            background-color: #177cb0;
+            width: 100%;
+        }
+        
+        .top_nav {
+            width: auto;
+            height: auto;
+            font-size: 30px;
+            border: 1px solid salmon;
+            /*margin-left: auto;*/
+            /*margin-right: auto;*/
+            /*color: white;*/
+        }
+        
+        .top_left {
+            float: left;
+        }
+        
+        .top_nav * {
+            color: white;
+            font-family: "微软雅黑";
+            font-size: 20px;
+            word-spacing: 200px;
+            margin-top: 20px;
+        }
+        
+        .top_nav a {
+            display: inline-block;
+        }
+        
+        .top_nav .top_se {
+            display: inline-block;
+            /* 行内块元素*/
+            margin-left: 5px;
+        }
+        
+        .xtmc {
+            font-size: 35px;
+            font-family: "华文行楷";
+            color: white;
+        }
+        
+        .mylittle {
+            margin-top: 10%;
+            margin-left: 15px;
+            font-size: 22px;
+            color: black;
+        }
+        
+        .info {
+            height: auto;
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+        }
+        
+        .info_left {
+            width: 60%;
+            height: auto;
+        }
+        
+        .mystyle {
+            margin-bottom: 5%;
+        }
+        
+        .info_right {
+            background-color: #F8F8FF;
+            width: 40%;
+        }
+        
+        .myform {
+            width: 100%;
+            justify-content: center;
+            padding-top: 30%;
+            padding: 10%;
+            margin-top: -5%;
+        }
+        
+        .mystylepas {
+            margin-bottom: 10%;
+        }
+        
+        .myownlogin {
+            width: 100%;
+            margin-bottom: 5%;
+        }
+        
+        .forgetpas {
+            transform: translateX(75%);
+        }
+        
+        .infostyle {
+            padding: 7%;
+            color: darkred;
+            background-color: #FFE4E1;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="comm_top" id="comm_top">
+        <div class="top_nav">
+            <div class="top_left">
+                <font class="xtmc">西安邮电大学转专业系统———登录界面</font>
+            </div>
+        </div>
+    </div>
+    <div class="info">
+        <img class="info_left" src="http://www.zfjw.xupt.edu.cn/zftal-ui-v5-1.0.2/assets/images/login_bg_pic.jpg">
+        <div class="info_right">
+            <div class="mylittle">
+                <p>用户登录</p>
+            </div>
+            <form method="post" class="myform">
+                <!--<br />账号-->
+                <!--<input type="text" name="account" id="account" placeholder="学号"/><br />
+					<br />密码
+					<input type="text" name="pwd" id="pwd" placeholder="初始密码为123456"/><br />
+					<br /><input type="submit" value="登录"/>-->
+                <div class="input-group mystyle">
+                    <span class="input-group-addon" id="sizing-addon2">学号</span>
+                    <input type="text" class="form-control" placeholder="请输入学号" aria-describedby="sizing-addon2">
+                </div>
+                <div class="input-group mystylepas">
+                    <span class="input-group-addon" id="sizing-addon2">密码</span>
+                    <input type="text" class="form-control" placeholder="请输入密码" aria-describedby="sizing-addon2">
+                </div>
+                <div class="forgetpas"><a>忘记密码了？</a></div>
+                <div>
+                    <button type="button" class="btn btn-primary myownlogin">登录</button>
+                </div>
+                <div class="infostyle">
+                    <div>1.学生账号为学号，管理员账号为指定账号，初始密码均为123456</div>
+                    <div>2.登录系统之后，请维护好邮箱信息，若忘记密码可通过邮箱找回</div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+
+</html>
