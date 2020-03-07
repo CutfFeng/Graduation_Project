@@ -7,7 +7,7 @@
     <script src="http://libs.baidu.com/jquery/2.0.0/jquery.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-	<script>
+	<!--<script>
 		document.getElementById("dept").οnclick=function(){
 		    var myselect=document.getElementById("dept");
 			var index=myselect.selectedIndex ; // selectedIndex代表的是你所选中项的index
@@ -15,6 +15,32 @@
 			alert(document.getElementById("selectval").value);
 //			myselect.options[index].text;
 		}
+	</script>-->
+
+	<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+	<script>
+		$(document).ready(function(){
+		  $("#messagePick1 li").click(function(){
+		    var temp = $(this).text();
+		  $("#messageField1").val(temp);
+		  });
+		});
+	</script>
+	<script>
+		$(document).ready(function(){
+		  $("#messagePick2 li").click(function(){
+		    var temp = $(this).text();
+		  $("#messageField2").val(temp);
+		  });
+		});
+	</script>
+	<script>
+		$(document).ready(function(){
+		  $("#messagePick3 li").click(function(){
+		    var temp = $(this).text();
+		  $("#messageField3").val(temp);
+		  });
+		});
 	</script>
 
     <style>
@@ -81,6 +107,14 @@
             font-size: 25px;
             font-weight: bold;
         }
+        
+        .row {
+        	width: 210%;
+        }
+        
+        .btn.btn-primary.myownlogin {
+        	width: 30%;
+        }
     </style>
 </head>
 
@@ -106,23 +140,59 @@
             <div class="col-lg-6">
                 <div class="input-group">
                     <div class="input-group-btn">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
-                        <ul class="dropdown-menu" id="dept">
-                            <li><a href="">Action</a></li>
-                            <li><a href="#">Another action</a></li>
-                            <li><a href="#">Something else here</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#">Separated link</a></li>
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">原先专业<span class="caret"></span></button>
+                        <ul class="dropdown-menu" id="messagePick1">
+                            <li><font>计算机学院</font></li>
+                            <li>经济与管理学院</li>
+                            <li>电子工程学院</li>
+                            <li>自动化学院</li>
                         </ul>
                     </div>
-                    <!-- /btn-group -->
-                    <input type="text" class="form-control" id="selectval" aria-label="..." value="">
+                    <input type="text" class="form-control" id="messageField1" aria-label="..." style="overflow:auto">
                 </div>
-                <!-- /input-group -->
             </div>
-            <!-- /.col-lg-6 -->
+        </div><br />
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="input-group">
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">转入专业<span class="caret"></span></button>
+                        <ul class="dropdown-menu" id="messagePick2">
+                            <li>计算机学院计算机科学与技术专业</li>
+                            <li>计算机学院软件工程专业</li>
+                            <li>计算机学院网络工程专业</li>
+                            <li>计算机学院大数据专业</li>
+                        </ul>
+                    </div>
+                    <input type="text" class="form-control" id="messageField2" aria-label="..." style="overflow:auto">
+                </div>
+            </div>
+        </div><br />
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="input-group">
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">已修课程<span class="caret"></span></button>
+                        <ul class="dropdown-menu" id="messagePick3">
+                            <li>计算机导论</li>
+                            <li>计算机基础</li>
+                        </ul>
+                    </div>
+                    <input type="text" class="form-control" id="messageField3" aria-label="..." style="overflow:auto">
+                </div>
+            </div>
+        </div><br />
+        <div>
+            <!--<center><button type="button" class="btn btn-primary myownlogin">提交</button></center>-->
+            <script language="javascript"> 
+		    function delcfm() { 
+		        if (!confirm("确认提交？")) { 
+		            window.event.returnValue = false; 
+		        } 
+		    } 
+			</script><form action="del.html" target="_blank" method="get"> 
+            <center><button type="button" class="btn btn-primary myownlogin" onclick="delcfm()">提交</button></center>	
         </div>
-        <!-- /.row -->
     </div>
 </body>
 
