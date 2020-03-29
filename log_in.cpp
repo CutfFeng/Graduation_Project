@@ -30,9 +30,9 @@ void log_in::match( ) {
     db.connect( "localhost", "root", "", "test" ); 
     string command = "select * from Account_Table where id=\"" + (string)a1 + "\";";
     //string command = "select * from Account_Table where id=\"xyjsjzzy\";";
-    cout << "command:" << command << endl;
+    // cout << "command:" << command << endl;
     vector<string> vec;
-    bool b = db.get_row( vec, command );
+    bool b = db.get_row_string( vec, command );
     if ( b ){
         //vector<string> v;
         stringstream iss( vec[0] );
@@ -285,134 +285,25 @@ void log_in::match( ) {
             }
         }
         else{
-            cout << "账号或密码错误！" << endl;
-            usleep(300);
             string s = "<!DOCTYPE html>\
             <html>\
                 <head>\
                     <meta charset=\"UTF-8\">\
-                    <title>登录界面</title>\
-                    <link rel=\"stylesheet\" href=\"https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css\">\
-                    <style type=\"text/css\">\
-                        body,\
-                        div {\
-                            margin: 0px;\
-                            /*  元素外间距*/\
-                        }\
-                        .comm_top {\
-                            height: 90px;\
-                            background-color: #177cb0;\
-                                        width: 100%;\
-                        }\
-                        .top_nav {\
-                            width: auto;\
-                            height: auto;\
-                            font-size: 30px;\
-                            border: 1px solid salmon;\
-                        }\
-                        .top_left {\
-                            float: left;\
-                        }\
-                        .top_nav * {\
-                            color: white;\
-                            font-family: \"微软雅黑\";\
-                            font-size: 20px;\
-                            word-spacing: 200px;\
-                            margin-top: 20px;\
-                        }\
-                        .top_nav a {\
-                            display: inline-block;\
-                        }\
-                        .top_nav .top_se {\
-                            display: inline-block;\
-                            /* 行内块元素*/\
-                            margin-left: 5px;\
-                        }\
-                        .xtmc {\
-                            font-size: 35px;\
-                            font-family: \"华文行楷\";\
-                            color: white;\
-                        }\
-                        .mylittle {\
-                            margin-top: 10%;\
-                            margin-left: 15px;\
-                            font-size: 22px;\
-                            color: black;\
-                        }\
-                        .info {\
-                            height: auto;\
-                            width: 100%;\
-                            display: flex;\
-                            flex-direction: row;\
-                        }\
-                        .info_left {\
-                            width: 60%;\
-                            height: auto;\
-                        }\
-                        .mystyle {\
-                            margin-bottom: 5%;\
-                        }\
-                        .info_right {\
-                            background-color: #F8F8FF;\
-                            width: 40%;\
-                        }\
-                        .myform {\
-                            width: 100%;\
-                            justify-content: center;\
-                            padding-top: 30%;\
-                            padding: 10%;\
-                            margin-top: -5%;\
-                        }\
-                        .mystylepas {\
-                            margin-bottom: 10%;\
-                        }\
-                        .myownlogin {\
-                            width: 100%;\
-                            margin-bottom: 5%;\
-                        }\
-                        .forgetpas {\
-                            transform: translateX(75%);\
-                        }\
-                        .infostyle {\
-                            padding: 7%;\
-                            color: darkred;\
-                            background-color: #FFE4E1;\
+                    <title>管理员界面</title>\
+                    <link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css\" integrity=\"sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u\" crossorigin=\"anonymous\">\
+                    <script src=\"https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js\" integrity=\"sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa\" crossorigin=\"anonymous\"></script>\
+                    <style>\
+                        .mylittle{\
+                            margin-top: 100px;\
+                            font-family: \"仿宋\";\
+                            font-size: 25px;\
                         }\
                     </style>\
                 </head>\
                 <body>\
-                    <div class=\"comm_top\" id=\"comm_top\">\
-                        <div class=\"top_nav\">\
-                            <div class=\"top_left\">\
-                                <font class=\"xtmc\">西安邮电大学转专业系统———登录界面</font>\
-                            </div>\
-                        </div>\
-                    </div>\
-                    <div class=\"info\">\
-                        <img class=\"info_left\" src=\"http://www.zfjw.xupt.edu.cn/zftal-ui-v5-1.0.2/assets/images/login_bg_pic.jpg\">\
-                        <div class=\"info_right\">\
-                            <div class=\"mylittle\">\
-                                <p>用户登录</p>\
-                            </div>\
-                            <form method=\"post\" class=\"myform\" action=\"../cgi-bin/login.cgi\">\
-                                <div class=\"input-group mystyle\">\
-                                    <span class=\"input-group-addon\" id=\"sizing-addon2\">学号</span>\
-                                    <input type=\"text\" class=\"form-control\" name=\"account\" placeholder=\"请输入学号\" aria-describedby=\"sizing-addon2\">\
-                                </div>\
-                                <div class=\"input-group mystylepas\">\
-                                    <span class=\"input-group-addon\" id=\"sizing-addon2\">密码</span>\
-                                    <input type=\"text\" class=\"form-control\" name=\"pwd\" placeholder=\"请输入密码\" aria-describedby=\"sizing-addon2\">\
-                                </div>\
-                                <div class=\"forgetpas\"><a>忘记密码了？</a></div>\
-                                <div>\
-                                    <button type=\"submit\" class=\"btn btn-primary myownlogin\">登录</button>\
-                                </div>\
-                                <div class=\"infostyle\">\
-                                    <div>1.学生账号为学号，管理员账号为指定账号，初始密码均为123456</div>\
-                                    <div>2.登录系统之后，请维护好邮箱信息，若忘记密码可通过邮箱找回</div>\
-                                </div>\
-                            </form>\
-                        </div>\
+                    <div class=\"mylittle\">\
+                        <center><font>账号或密码错误！</font><br>\
+                        <a href=\"http://localhost/login.html\">重新登陆</a></center>\
                     </div>\
                 </body>\
             </html>";
@@ -420,137 +311,29 @@ void log_in::match( ) {
         }
     }
     else{
-        cout << "该用户不存在!" << endl;
-        usleep(300);
-            string s = "<!DOCTYPE html>\
+        string s = "<!DOCTYPE html>\
             <html>\
                 <head>\
                     <meta charset=\"UTF-8\">\
-                    <title>登录界面</title>\
-                    <link rel=\"stylesheet\" href=\"https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css\">\
-                    <style type=\"text/css\">\
-                        body,\
-                        div {\
-                            margin: 0px;\
-                            /*  元素外间距*/\
-                        }\
-                        .comm_top {\
-                            height: 90px;\
-                            background-color: #177cb0;\
-                                        width: 100%;\
-                        }\
-                        .top_nav {\
-                            width: auto;\
-                            height: auto;\
-                            font-size: 30px;\
-                            border: 1px solid salmon;\
-                        }\
-                        .top_left {\
-                            float: left;\
-                        }\
-                        .top_nav * {\
-                            color: white;\
-                            font-family: \"微软雅黑\";\
-                            font-size: 20px;\
-                            word-spacing: 200px;\
-                            margin-top: 20px;\
-                        }\
-                        .top_nav a {\
-                            display: inline-block;\
-                        }\
-                        .top_nav .top_se {\
-                            display: inline-block;\
-                            /* 行内块元素*/\
-                            margin-left: 5px;\
-                        }\
-                        .xtmc {\
-                            font-size: 35px;\
-                            font-family: \"华文行楷\";\
-                            color: white;\
-                        }\
-                        .mylittle {\
-                            margin-top: 10%;\
-                            margin-left: 15px;\
-                            font-size: 22px;\
-                            color: black;\
-                        }\
-                        .info {\
-                            height: auto;\
-                            width: 100%;\
-                            display: flex;\
-                            flex-direction: row;\
-                        }\
-                        .info_left {\
-                            width: 60%;\
-                            height: auto;\
-                        }\
-                        .mystyle {\
-                            margin-bottom: 5%;\
-                        }\
-                        .info_right {\
-                            background-color: #F8F8FF;\
-                            width: 40%;\
-                        }\
-                        .myform {\
-                            width: 100%;\
-                            justify-content: center;\
-                            padding-top: 30%;\
-                            padding: 10%;\
-                            margin-top: -5%;\
-                        }\
-                        .mystylepas {\
-                            margin-bottom: 10%;\
-                        }\
-                        .myownlogin {\
-                            width: 100%;\
-                            margin-bottom: 5%;\
-                        }\
-                        .forgetpas {\
-                            transform: translateX(75%);\
-                        }\
-                        .infostyle {\
-                            padding: 7%;\
-                            color: darkred;\
-                            background-color: #FFE4E1;\
+                    <title>管理员界面</title>\
+                    <link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css\" integrity=\"sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u\" crossorigin=\"anonymous\">\
+                    <script src=\"https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js\" integrity=\"sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa\" crossorigin=\"anonymous\"></script>\
+                    <style>\
+                        .mylittle{\
+                            margin-top: 100px;\
+                            font-family: \"仿宋\";\
+                            font-size: 25px;\
                         }\
                     </style>\
                 </head>\
                 <body>\
-                    <div class=\"comm_top\" id=\"comm_top\">\
-                        <div class=\"top_nav\">\
-                            <div class=\"top_left\">\
-                                <font class=\"xtmc\">西安邮电大学转专业系统———登录界面</font>\
-                            </div>\
-                        </div>\
-                    </div>\
-                    <div class=\"info\">\
-                        <img class=\"info_left\" src=\"http://www.zfjw.xupt.edu.cn/zftal-ui-v5-1.0.2/assets/images/login_bg_pic.jpg\">\
-                        <div class=\"info_right\">\
-                            <div class=\"mylittle\">\
-                                <p>用户登录</p>\
-                            </div>\
-                            <form method=\"post\" class=\"myform\" action=\"../cgi-bin/login.cgi\">\
-                                <div class=\"input-group mystyle\">\
-                                    <span class=\"input-group-addon\" id=\"sizing-addon2\">学号</span>\
-                                    <input type=\"text\" class=\"form-control\" name=\"account\" placeholder=\"请输入学号\" aria-describedby=\"sizing-addon2\">\
-                                </div>\
-                                <div class=\"input-group mystylepas\">\
-                                    <span class=\"input-group-addon\" id=\"sizing-addon2\">密码</span>\
-                                    <input type=\"text\" class=\"form-control\" name=\"pwd\" placeholder=\"请输入密码\" aria-describedby=\"sizing-addon2\">\
-                                </div>\
-                                <div class=\"forgetpas\"><a>忘记密码了？</a></div>\
-                                <div>\
-                                    <button type=\"submit\" class=\"btn btn-primary myownlogin\">登录</button>\
-                                </div>\
-                                <div class=\"infostyle\">\
-                                    <div>1.学生账号为学号，管理员账号为指定账号，初始密码均为123456</div>\
-                                    <div>2.登录系统之后，请维护好邮箱信息，若忘记密码可通过邮箱找回</div>\
-                                </div>\
-                            </form>\
-                        </div>\
+                    <div class=\"mylittle\">\
+                        <center><font>该用户不存在！</font><br>\
+                        <a href=\"http://localhost/login.html\">重新登陆</a></center>\
                     </div>\
                 </body>\
             </html>";
-            cout << s << endl;
-        }
+        cout << s << endl;
+    }
+    
 }
