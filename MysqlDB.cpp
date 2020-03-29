@@ -18,22 +18,24 @@ void MysqlDB::connect( string host, string user, string passwd,  string database
         cout << "connect error, line: " << __LINE__ << endl;
         exit(-1);
     }
+    string command = "SET NAMES UTF8;";
+    mysql_query( &mysql, command.c_str() );
 }
-void MysqlDB::add() {
-    string id,passwd;
-    do {
-        cout << "添加账号密码:\n";
+void MysqlDB::comd( string command ) {
+    // string id,passwd;
+    // do {
+    //     cout << "添加账号密码:\n";
 
-        cin >> id >> passwd;
-        string command = "insert into Account_Table values('" + id + "','" + passwd + "');";
+    //     cin >> id >> passwd;
+    //     string command = "insert into Account_Table values('" + id + "','" + passwd + "');";
         mysql_query( &mysql, command.c_str() );
-        cout << "Continue?(y/n): ";
-        cin >> id;
+    //     cout << "Continue?(y/n): ";
+    //     cin >> id;
 
-    }while ( id == "y" );    
+    // }while ( id == "y" );    
 }
 
-bool MysqlDB::get_row( vector<string> &vec, string command ) {
+bool MysqlDB::get_row_string( vector<string> &vec, string command ) {
     //string command = "select * from Account_Table where id=\"xyjsjzzy\";";
     mysql_query( &mysql, command.c_str() );
 
@@ -56,7 +58,8 @@ bool MysqlDB::get_row( vector<string> &vec, string command ) {
         int i = 0;
         string s = "";
 		while ( i < col_num ) {
-            s = s + row[i++] + '\t';
+            // cout << "getrow:" << row[i] << endl;
+            s = s + (string)row[i++] + '\t';
 		}
 		vec.push_back ( s );
 	}
@@ -66,15 +69,71 @@ bool MysqlDB::get_row( vector<string> &vec, string command ) {
         return false;
 	
 }
+
+int MysqlDB::get_row_int (string command ) {
+    mysql_query( &mysql, command.c_str() );
+
+    result = mysql_store_result( &mysql );
+    if( !result ) {
+        cout << "result error, line : " << __LINE__ << endl;
+        return -1;
+    }
+
+    // int num;
+    // num = mysql_num_fields( result );  //返回字段个数
+    // for( int i = 0; i < num; i++ ) {
+    //     field = mysql_fetch_field_direct( result, i );  //返回字段类型
+    //     cout << field->name << "\t\t";  //输出字段名
+    // }
+    // cout << endl;
+    int n;
+    while( row = mysql_fetch_row( result ), row ) {
+        n = atoi(row[0]);
+        // cout << "n:" << n << endl;
+    }
+    return n;
+}
+
+void MysqlDB::print( string command ) {
+
+    // string sql = "select * from info where name = '" + name + "';";  //要有''
+    // string sql = "select * from info;";
+    mysql_query( &mysql, command.c_str() );
+
+    result = mysql_store_result( &mysql );
+    if( !result ) {
+        cout << "result error, line : " << __LINE__ << endl;
+        return ;
+    }
+
+    int num;
+    num = mysql_num_fields( result );  //返回字段个数
+    for( int i = 0; i < num; i++ ) {
+        field = mysql_fetch_field_direct( result, i );  //返回字段类型
+        cout << field->name << "\t\t";  //输出字段名
+    }
+    cout << endl;
+
+    while( row = mysql_fetch_row( result ), row ) {
+        for( int i = 0; i < num; i++ ) {
+            cout << row[i] << "\t\t";
+        }
+        cout << endl;
+    }
+}
+
 /*
 int main() {
     
     MysqlDB db;
     db.connect( "localhost", "root", "", "test" ); 
     //db.add();
-    string command = "select * from Account_Table;";
-    vector<string> vec;
-    bool b = db.get_row( vec, command );
+    string command = "select Dno from Dept_Table where dept='计算机学院计算机科学与技术';";
+    // string command = "select * from Dept_Table;";
+    cout << "command:" << command << endl;
+    db.print( command );
+    // vector<string> vec;
+    // bool b = db.get_row( vec, command );
     //char *s = "f=02162028&s=980607";
     //db.get_row();
     //cout << "fit=" << db.fit << endl;

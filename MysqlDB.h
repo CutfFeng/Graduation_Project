@@ -16,6 +16,8 @@ public:
     MysqlDB();
     ~MysqlDB();
     void connect( string host, string user, string passwd,  string database );
-    void add();
-    bool get_row( vector<string> &vec, string command );
+    void comd( string command );
+    bool get_row_string( vector<string> &vec, string command );
+    int get_row_int( string command );
+    void print( string command );
 };
