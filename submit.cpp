@@ -2,11 +2,14 @@
 #include <cstring>
 #include "MysqlDB.h"
 #include <stdlib.h>
+#include <sstream>
+#include <unistd.h>
 
 submit::submit(){
     printf("content-type:text/html;charset=utf-8\n\n");
-    data=getenv("CONTENT_LENGTH");
-    len=atoi(data);
+    char *d=getenv("CONTENT_LENGTH");
+    len=atoi(d);
+    data = (char*)malloc(2);
     fgets(data,len+1,stdin);
     // cout << "data:" << data << endl;
     string str = data;
@@ -109,52 +112,168 @@ string submit::urldecode(string &str_source)
     return out_str;
 }
 
-bool submit::addTo_mysql(){
+void submit::addTo_apptable( submit sb, string new_Dno ) {
     MysqlDB db;
     db.connect( "localhost", "root", "", "test" ); 
+    string command1 = "select grade from test.Adu_Grade_Table where id='" + id
+                     + "' and Cno in(select Cno from test.Course_Table where Cname like '%高%数%');";
+    int math = db.get_row_int( command1 );
+    string command2 = "select grade from test.Adu_Grade_Table where id='" + id
+                        + "' and Cno in(select Cno from test.Course_Table where Cname like '大学英语%');";
+    int english = db.get_row_int( command2 );
+    string command3 = "select grade from test.Adu_Grade_Table where id='" + id
+                        + "' and Cno in(select Cno from test.Course_Table where Cname like '线性代数%');";
+    int algebra = db.get_row_int( command3 );
+    int ave = ( math + english + algebra )/3;
+    char avegrade[3];
+    sprintf( avegrade, "%d", ave );
+
+    //将数据插入到申请表中
+    string command4 = "insert into Application_Table values('" + id + "'," + new_Dno[0] + "," + avegrade + "," + "1);";
+    db.comd( command4 );
+
+    //降序排列
+    // string command5 = "select * from Application_Table order by avegrade_ema desc;";
+    // db.comd( command5 );
+    // cout << "command:" << command << endl;
+    // cout << "math:" << math << "english:" << english << "algebra:" << algebra << "avegrade:" << avegrade << endl;
+
+}
+
+void submit::addTo_submittable( submit sb ){
+    MysqlDB db;
+    db.connect( "localhost", "root", "", "test" );
     // string command1 = "select Dno from Dept_Table where dept='计算机学院计算机科学与技术';";
     // cout << "command1:" << command1 << endl;
     // db.print( command1 );   
 
-    string command1 = "select Dno from Dept_Table where dept='" + new_dept + "';"; 
-    int dno = db.get_row_int( command1 );
-    char new_Dno[1];
-    sprintf( new_Dno, "%d", dno );
-    // cout << "command1:" << command1 << "new_Dno=" << new_Dno << endl;
+    string command1 = "select Sname from Student_Table where id='" + id + "';";
+    vector<string> vec1;
+    bool b1 = db.get_row_string( vec1, command1 );
+    int len1 = vec1[0].length();
 
-    string command2 = "select Cno from Course_Table where Cname='" + already_class + "';";
-    int cno = db.get_row_int( command2 );
-    char old_Cno[1];
-    sprintf( old_Cno, "%d", cno );
-    // cout << "command2:" << command2 << "old_Cno=" << cno << endl;
+    string command2 = "select Dno from Student_Table where id='" + id + "';";
+    // vector<string> vec2;
+    bool b2 = db.get_row_string( vec1, command2 );
 
-    string command3 = "select * from Submit_Table where id='" + id + "';";
-    vector<string> v;
-    bool b = db.get_row_string( v, command3 );
-    cout << "command3:" << command3 << "b:" << b << endl;
-    if ( !b ) {
-        string command = "insert into Submit_Table values('" + id + "'," + new_Dno[0] + "," + old_Cno + ");";
-        db.comd( command );
-        cout << "command:" << command << endl;
+    string command3 = "select Dno from Dept_Table where dept='" + old_dept + "';";
+    // cout << "command:" << command3;
+    // vector<string> vec3;
+    bool b3 = db.get_row_string( vec1, command3 );
+    // cout << "sname:" << vec1[0].substr( 0,len1-1 ) << "Dno:" << vec1[1] << vec1[2];
+
+    if( !b1 or !b2 or vec1[0].substr( 0,len1-1 )!=name or vec1[1] != vec1[2] ) {
+        // std::cout << "b1:b2:" + b1 + b2;
+        // std::cout << "ss:" + vec1[0].substr( 0,len1-1 ) + "name:" + name + "Dno:" + vec1[1] << endl;
+
+        string ss = "<!DOCTYPE html>\
+                <html>\
+                    <head>\
+                        <meta charset=\"UTF-8\">\
+                        <title>提交界面</title>\
+                        <link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css\" integrity=\"sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u\" crossorigin=\"anonymous\">\
+                        <script src=\"https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js\" integrity=\"sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa\" crossorigin=\"anonymous\"></script>\
+                        <style>\
+                            .mylittle{\
+                                margin-top: 100px;\
+                                font-family: \"仿宋\";\
+                                font-size: 25px;\
+                            }\
+                        </style>\
+                    </head>\
+                    <body>\
+                        <div class=\"mylittle\">\
+                            <center><font>报名信息有误！</font><br>\
+                            <a href=\"http://localhost/submit.html\">返回</a></center>\
+                        </div>\
+                    </body>\
+                </html>";
+        std::cout << ss << endl;
     }
     else {
-        string s;
-        s.push_back(new_Dno[0]);
-        string command = "update Submit_Table set new_Dno=" + s + ",old_Cno=" + old_Cno + " where id='" + id + "';";
-        db.comd( command );
-        cout << "command:" << command << endl;
+        string command1 = "select Dno from Dept_Table where dept='" + new_dept + "';"; 
+        int dno = db.get_row_int( command1 );
+        char new_Dno[1];
+        sprintf( new_Dno, "%d", dno );
+        // cout << "command1:" << command1 << "new_Dno=" << new_Dno << endl;
+
+        string command2 = "select Cno from Course_Table where Cname='" + already_class + "';";
+        int cno = db.get_row_int( command2 );
+        char old_Cno[1];
+        sprintf( old_Cno, "%d", cno );
+        // cout << "command2:" << command2 << "old_Cno=" << cno << endl;
+
+        string command3 = "select * from Submit_Table where id='" + id + "';";
+        vector<string> v;
+        bool b = db.get_row_string( v, command3 );
+        // cout << "command3:" << command3 << "b:" << b << endl;
+        if ( !b ) {
+            string command = "insert into Submit_Table values('" + id + "'," + new_Dno[0] + "," + old_Cno + ");";
+            db.comd( command );
+            sb.addTo_apptable ( sb, new_Dno );        
+
+            // cout << "command:" << command << endl;
+            string ss = "<!DOCTYPE html>\
+                <html>\
+                    <head>\
+                        <meta charset=\"UTF-8\">\
+                        <title>提交界面</title>\
+                        <link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css\" integrity=\"sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u\" crossorigin=\"anonymous\">\
+                        <script src=\"https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js\" integrity=\"sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa\" crossorigin=\"anonymous\"></script>\
+                        <style>\
+                            .mylittle{\
+                                margin-top: 100px;\
+                                font-family: \"仿宋\";\
+                                font-size: 25px;\
+                            }\
+                        </style>\
+                    </head>\
+                    <body>\
+                        <div class=\"mylittle\">\
+                            <center><font>报名信息提交成功！</font><br>\
+                            <a href=\"http://localhost/student.html\">返回</a></center>\
+                        </div>\
+                    </body>\
+                </html>";
+            std::cout << ss << endl;
+        }
+        else {
+            string s;
+            s.push_back(new_Dno[0]);
+            string command = "update Submit_Table set new_Dno=" + s + ",old_Cno=" + old_Cno + " where id='" + id + "';";
+            db.comd( command );
+            // cout << "command:" << command << endl;
+            string ss = "<!DOCTYPE html>\
+                <html>\
+                    <head>\
+                        <meta charset=\"UTF-8\">\
+                        <title>提交界面</title>\
+                        <link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css\" integrity=\"sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u\" crossorigin=\"anonymous\">\
+                        <script src=\"https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js\" integrity=\"sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa\" crossorigin=\"anonymous\"></script>\
+                        <style>\
+                            .mylittle{\
+                                margin-top: 100px;\
+                                font-family: \"仿宋\";\
+                                font-size: 25px;\
+                            }\
+                        </style>\
+                    </head>\
+                    <body>\
+                        <div class=\"mylittle\">\
+                            <center><font>报名信息修改成功！</font><br>\
+                            <a href=\"http://localhost/student.html\">返回</a></center>\
+                        </div>\
+                    </body>\
+                </html>";
+            std::cout << ss << endl;
+        }
     }
-    
     // cout << "command:" << command << endl;
-    return true;
 }
 
 int main(){
     submit sb;
-    bool b = sb.addTo_mysql();
-    if ( !b )   
-        return -1;
-    else        
-        cout << "提交成功！" << endl;
+    sb.addTo_submittable( sb );
+
     return 0;
 }
