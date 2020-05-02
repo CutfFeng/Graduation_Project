@@ -127,14 +127,15 @@
         </div>
     </div>
     <div class="tijiao">
-        <div class="baoming">请如实填写以下信息：</div><br />
+       <form action="../cgi-bin/submit.cgi" method="post" accept-charset="utf-8"> 
+	<div class="baoming">请如实填写以下信息：</div><br />
         <div class="input-group">
             <span class="input-group-addon" id="basic-addon1">学号</span>
-            <input type="text" class="form-control" placeholder="请输入学号" aria-describedby="basic-addon1">
+            <input type="text" name="id" class="form-control" placeholder="请输入学号" aria-describedby="basic-addon1">
         </div><br />
         <div class="input-group">
             <span class="input-group-addon" id="basic-addon2">姓名</span>
-            <input type="text" class="form-control" placeholder="请输入姓名" aria-describedby="basic-addon1">
+            <input type="text" name="name" class="form-control" placeholder="请输入姓名" aria-describedby="basic-addon1">
         </div><br />
         <div class="row">
             <div class="col-lg-6">
@@ -142,13 +143,13 @@
                     <div class="input-group-btn">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">原先专业<span class="caret"></span></button>
                         <ul class="dropdown-menu" id="messagePick1">
-                            <li><font>计算机学院</font></li>
-                            <li>经济与管理学院</li>
+                            <li><font>计算机学院软件工程</font></li>
+                            <li>经管电子商务</li>
                             <li>电子工程学院</li>
                             <li>自动化学院</li>
                         </ul>
                     </div>
-                    <input type="text" class="form-control" id="messageField1" aria-label="..." style="overflow:auto">
+                    <input type="text" name="old_dept" class="form-control" id="messageField1" aria-label="..." style="overflow:auto">
                 </div>
             </div>
         </div><br />
@@ -158,13 +159,13 @@
                     <div class="input-group-btn">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">转入专业<span class="caret"></span></button>
                         <ul class="dropdown-menu" id="messagePick2">
-                            <li>计算机学院计算机科学与技术专业</li>
-                            <li>计算机学院软件工程专业</li>
-                            <li>计算机学院网络工程专业</li>
-                            <li>计算机学院大数据专业</li>
+                            <li>计算机学院计算机科学与技术</li>
+                            <li>计算机学院软件工程</li>
+                            <li>计算机学院网络工程</li>
+                            <li>计算机学院大数据</li>
                         </ul>
                     </div>
-                    <input type="text" class="form-control" id="messageField2" aria-label="..." style="overflow:auto">
+                    <input type="text" name="new_dept" class="form-control" id="messageField2" aria-label="..." style="overflow:auto">
                 </div>
             </div>
         </div><br />
@@ -178,7 +179,7 @@
                             <li>计算机基础</li>
                         </ul>
                     </div>
-                    <input type="text" class="form-control" id="messageField3" aria-label="..." style="overflow:auto">
+                    <input type="text" name="already_class" class="form-control" id="messageField3" aria-label="..." style="overflow:auto">
                 </div>
             </div>
         </div><br />
@@ -191,9 +192,10 @@
 		        } 
 		    } 
 			</script><form action="del.html" target="_blank" method="get"> 
-            <center><button type="button" class="btn btn-primary myownlogin" onclick="delcfm()">提交</button></center>	
+            <center><button type="submit" class="btn btn-primary myownlogin" onclick="delcfm()">提交</button></center>	
         </div>
-    </div>
+   </form> 
+   </div>
 </body>
 
 </html>

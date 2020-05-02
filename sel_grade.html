@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="UTF-8">
+        <title>成绩查询</title>
+        <script src="http://libs.baidu.com/jquery/2.0.0/jquery.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+        <script>
+            $(document).ready(function(){
+              $("#messagePick2 li").click(function(){
+                var temp = $(this).text();
+              $("#messageField2").val(temp);
+              });
+            });
+        </script>
+
+        <style>
+            .mylittle{
+                margin-top: 100px;
+                margin-left: 35%;
+                font-family: "仿宋";
+                font-size: 25px;
+            }
+            .mylittle2{
+                margin-left: 20%;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="mylittle">
+            <form action="../cgi-bin/sel_grade.cgi" method="post" accept-charset="utf-8"> 
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="input-group">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">转入专业<span class="caret"></span></button>
+                                <ul class="dropdown-menu" id="messagePick2">
+                                    <li>计算机学院计算机科学与技术</li>
+                                    <li>计算机学院软件工程</li>
+                                    <li>计算机学院网络工程</li>
+                                    <li>计算机学院大数据</li>
+                                </ul>
+                            </div>
+                            <input type="text" name="new_dept" class="form-control" id="messageField2" aria-label="..." style="overflow:auto">
+                        </div>
+                    </div>
+                </div><br/>
+                <div class="mylittle2">
+                    <button type="submit" class="btn btn-primary myownlogin" onclick="delcfm()">查询</button>
+                </div>
+            </form>
+        </div>
+    </body>
+
+</html>

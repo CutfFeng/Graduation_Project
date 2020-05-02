@@ -128,23 +128,18 @@
             <div class="mylittle">
                 <p>用户登录</p>
             </div>
-            <form method="post" class="myform">
-                <!--<br />账号-->
-                <!--<input type="text" name="account" id="account" placeholder="学号"/><br />
-					<br />密码
-					<input type="text" name="pwd" id="pwd" placeholder="初始密码为123456"/><br />
-					<br /><input type="submit" value="登录"/>-->
+            <form method="post" class="myform" action="../cgi-bin/login.cgi">
                 <div class="input-group mystyle">
                     <span class="input-group-addon" id="sizing-addon2">学号</span>
-                    <input type="text" class="form-control" placeholder="请输入学号" aria-describedby="sizing-addon2">
+                    <input type="text" class="form-control" name="account" placeholder="请输入学号" aria-describedby="sizing-addon2">
                 </div>
                 <div class="input-group mystylepas">
                     <span class="input-group-addon" id="sizing-addon2">密码</span>
-                    <input type="text" class="form-control" placeholder="请输入密码" aria-describedby="sizing-addon2">
+                    <input type="text" class="form-control" name="pwd" placeholder="请输入密码" aria-describedby="sizing-addon2">
                 </div>
                 <div class="forgetpas"><a>忘记密码了？</a></div>
                 <div>
-                    <button type="button" class="btn btn-primary myownlogin">登录</button>
+                    <button type="submit" class="btn btn-primary myownlogin">登录</button>
                 </div>
                 <div class="infostyle">
                     <div>1.学生账号为学号，管理员账号为指定账号，初始密码均为123456</div>

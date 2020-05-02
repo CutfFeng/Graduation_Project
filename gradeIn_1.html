@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <title>成绩录入</title>
+    <style>    	
+        body,
+        input {
+            font-family: Verdana, Arial, Helvetica, sans-serif;
+            font-size: 15px;
+        }
+ 
+        .error {
+            border: 2px solid red;
+        }
+ 
+        table,
+        th,
+        td {
+            border: 1px solid grey;
+            border-collapse: collapse;
+            padding: 5px;
+            text-align: center;
+            width: 50px;
+        }
+ 
+        table tr:nth-child(odd) {
+            background-color: #f1f1f1;
+        }
+ 
+        table tr:nth-child(even) {
+            background-color: #ffffff;
+        }
+ 
+        .input {
+            text-align: center;
+            width: 150px;
+        }
+ 
+        .submit {
+        	font-family: "宋体";
+            width: 200px;
+            height: 30px;
+            line-height: 30px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+    </style>
+    <script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
+    <script>
+        // 学生数据，实际应用中，可以利用AJAX请求此数据
+        var students = [
+            { no: '1', sno:'', name: '', score1:'' , score2:'', score3:'' },
+            { no: '2', sno:'', name: '', score1:'' , score2:'', score3:'' },
+            { no: '3', sno:'', name: '', score1:'' , score2:'', score3:'' },
+            { no: '4', sno:'', name: '', score1:'' , score2:'', score3:'' },
+            { no: '5', sno:'', name: '', score1:'' , score2:'', score3:'' },
+            { no: '6', sno:'', name: '', score1:'' , score2:'', score3:'' },
+            { no: '7', sno:'', name: '', score1:'' , score2:'', score3:'' },
+            { no: '8', sno:'', name: '', score1:'' , score2:'', score3:'' },
+            { no: '9', sno:'', name: '', score1:'' , score2:'', score3:'' },
+            { no: '10', sno:'', name: '', score1:'' , score2:'', score3:'' },
+            { no: '11', sno:'', name: '', score1:'' , score2:'', score3:'' },
+            { no: '12', sno:'', name: '', score1:'' , score2:'', score3:'' },
+            { no: '13', sno:'', name: '', score1:'' , score2:'', score3:'' },
+            { no: '14', sno:'', name: '', score1:'' , score2:'', score3:'' },
+            { no: '15', sno:'', name: '', score1:'' , score2:'', score3:'' },
+            { no: '16', sno:'', name: '', score1:'' , score2:'', score3:'' },
+            { no: '17', sno:'', name: '', score1:'' , score2:'', score3:'' },
+            { no: '18', sno:'', name: '', score1:'' , score2:'', score3:''},
+            { no: '19', sno:'', name: '', score1:'' , score2:'', score3:'' },
+            { no: '20', sno:'', name: '', score1:'' , score2:'', score3:'' },
+            { no: '21', sno:'', name: '', score1:'' , score2:'', score3:'' },
+            { no: '22', sno:'', name: '', score1:'' , score2:'', score3:'' },
+            { no: '23', sno:'', name: '', score1:'' , score2:'', score3:'' },
+            { no: '24', sno:'', name: '', score1:'' , score2:'', score3:'' },
+            { no: '25', sno:'', name: '', score1:'' , score2:'', score3:'' },
+            { no: '26', sno:'', name: '', score1:'' , score2:'', score3:'' },
+            { no: '27', sno:'', name: '', score1:'' , score2:'', score3:'' },
+            { no: '28', sno:'', name: '', score1:'' , score2:'', score3:'' },
+            { no: '29', sno:'', name: '', score1:'' , score2:'', score3:'' },
+            { no: '30', sno:'', name: '', score1:'' , score2:'', score3:'' }
+        ];
+
+        // 初始化，根据学生数据生成表格
+        function init() {
+            for (student of students) {
+                $("#scoreTable").append(`
+                    <tr>
+                        <td>${student.no}</td>
+                        <td><input type="text" class="input" name="sno" value="${student.sno}"></td>
+                        <td><input type="text" class="input" name="name" value="${student.name}"></td>
+                        <td><input type="text" class="input" name="score1" value="${student.score1}" onblur="calc()"></td>
+                        <td><input type="text" class="input" name="score2" value="${student.score2}" onblur="calc()"></td>
+                        <td><input type="text" class="input" name="score3" value="${student.score3}" disabled></td>
+                    </tr>
+                `);
+            }
+        }
+
+        function calc() {
+            // 查找该行中的文本框
+            var inputs = $(event.target).parent().parent().find('input');
+            var input3 = inputs.eq(2);
+            var input4 = inputs.eq(3);
+            // 检查成绩的有效性
+            if (!checkNumber(input3.val())) {
+                input3.addClass('error');
+                setTimeout(function () { input3.removeClass('error') }, 3000);
+                return;
+            }
+            if (!checkNumber(input4.val())) {
+                input4.addClass('error');
+                setTimeout(function () { input4.removeClass('error') }, 3000);
+                return;
+            }
+            // 计算总成绩
+            inputs.eq(4).val((parseFloat(input3.val()) * 0.5 + parseFloat(input4.val()) * 0.5).toFixed(2));
+        }
+        // 检查数字的有效性，返回true/false
+        // 首先它必须是一个数字
+        // 其次数字必须在0~100之间
+        function checkNumber(num) {
+            if (!(parseFloat(num).toString() === 'NaN') && num >= 0 && num <= 100) return true;
+            return false;
+        }
+
+        $(function () {
+            init();
+        });
+    </script>
+
+
+</head>
+ 
+<body>
+	<ul class="nav nav-tabs">
+	  	<li role="presentation" class="active"><a href="#">计算机科学与技术</a></li>
+	  	<li role="presentation"><a href="http://localhost/gradeIn_2.html">软件工程</a></li>
+	  	<li role="presentation"><a href="http://localhost/gradeIn_3.html">网络工程</a></li>
+	  	<li role="presentation"><a href="http://localhost/teacher.html">返回</a></li>
+	</ul>
+    <div> 
+    <form method="post" action="../cgi-bin/gradeIn_1.cgi"> 
+        <table id="scoreTable" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>学号</th>
+                    <th>姓名</th>
+                    <th>笔试成绩</th>
+                    <th>面试成绩</th>
+                    <th>最终成绩</th>
+                </tr>
+            </thead>
+        </table>
+        <button class="submit" type="submit">提交</button>
+    </form>  
+    </div>
+</body>
+ 
+</html>
