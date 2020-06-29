@@ -98,57 +98,81 @@ void MysqlDB::print( string command ) {
 
     // string sql = "select * from info where name = '" + name + "';";  //要有''
     // string sql = "select * from info;";
-    mysql_query( &mysql, command.c_str() );
+    //cout << command << endl;
+    int ret = mysql_query( &mysql, command.c_str() );
+
+    //cout << "ret1:" << ret;
 
     result = mysql_store_result( &mysql );
     if( !result ) {
         cout << "result error, line : " << __LINE__ << endl;
         return ;
-    }
-
+    }  
     string ss = "<!DOCTYPE html>\
                 <html>\
                     <head>\
                         <meta charset=\"UTF-8\">\
                         <title>成绩查询</title>\
-                        <link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css\" integrity=\"sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u\" crossorigin=\"anonymous\">\
+                        <link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css\" integrity=\"sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u\" crossorigin=\"anonymous\">\   
                         <script src=\"https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js\" integrity=\"sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa\" crossorigin=\"anonymous\"></script>\
-                        <style>\
-                            .mylittle{\
-                                margin-top: 100px;\
-                                margin-left: 25%;\
-                                font-family: \"仿宋\";\
-                                font-size: 25px;\
-                            }\
-                        </style>\
                     </head>\
                     <body>\
-                        <div class=\"mylittle\">\
-                            <font>";
+                <table class=\"table table-striped\">\
+                <thead>\
+                    <tr>\
+                    <th>姓名</th>\
+                    <th>学号</th>\
+                    <th>笔试成绩</th>\
+                    <th>面试成绩</th>\
+                    <th>最终成绩</th>\
+                    <th>排名</th>\
+                    </tr>\
+                </thead>\
+                <tbody>";
     int num;
     num = mysql_num_fields( result );  //返回字段个数
-    for( int i = 0; i < num; i++ ) {
-        field = mysql_fetch_field_direct( result, i );  //返回字段类型
-        // cout << field->name << "\t\t";  //输出字段名
-        ss = ss + field->name + "          ";
-    }
-    ss += "</font><br/>\
-            <font>";
+    
+    // for( int i = 0; i < num; i++ ) {
+    //     field = mysql_fetch_field_direct( result, i );  //返回字段类型
+    //     // cout << field->name << "\t\t";  //输出字段名
+    //     ss = ss + field->name + "          ";
+    // }
 
+    int rank1 = 1;
+    
     while( row = mysql_fetch_row( result ), row ) {
+        ss = ss + "<tr>";
         for( int i = 0; i < num; i++ ) {
             // cout << row[i] << "\t\t";
-            ss = ss + row[i] + "          ";
+
+            //姓名
+            if ( i == 0 ) {
+                string command = "select Sname from Student_Table where id=\"" + (string)row[i] + "\";";
+                // cout << command;
+                vector<string> vec;
+                MysqlDB db;
+                db.connect( "localhost", "root", "", "test" ); 
+                bool b = db.get_row_string( vec, command );
+                // cout << vec[0];
+                ss = ss + "<td>" + vec[0] + "</td>";
+            }
+            // string s = row[i];
+
+            ss = ss + "<td>" + row[i] + "</td>";
         }
-        ss += "<br/>";
+        char rank[2];
+        sprintf( rank, "%d", rank1 );
+        ss = ss + "<td>" + rank + "</td>";
+        rank1++ ;
+        ss += "</tr>";
     }
-    ss += "</font><br/>\
-                <a href=\"http://localhost/student.html\">返回</a></center>\
-            </div>\
+    ss += "  </tbody>\
+        </table>\
         </body>\
-    </html>";
+        </html>";
     
     std::cout << ss << endl;
+
 }
 
 /*
@@ -157,13 +181,13 @@ int main() {
     MysqlDB db;
     db.connect( "localhost", "root", "", "test" ); 
     
-    string command1 = "select grade from test.Adu_Grade_Table where id='02162028' and Cno in(select Cno from test.Course_Table where Cname like '%高%数%');";
-    int math = db.get_row_int( command1 );
-    cout << "math:" << math << endl;
+    // string command1 = "select grade from test.Adu_Grade_Table where id='02162028' and Cno in(select Cno from test.Course_Table where Cname like '%高%数%');";
+    // int math = db.get_row_int( command1 );
+    // cout << "math:" << math << endl;
     // string command = "select Dno from Dept_Table where dept='计算机学院计算机科学与技术';";
-    // string command = "select * from Dept_Table;";
+    string command = "select id,written_grade,interview_grade,final_grade from Grade_Table where Dno='1'order by final_grade desc;";
     // cout << "command:" << command << endl;
-    // db.print( command );
+     db.print( command );
     
     return 0;
 }

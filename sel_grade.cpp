@@ -82,8 +82,9 @@ void sel_grade::print() {
     vector<string> vec;
     bool b = db.get_row_string( vec, command1 );
     int len = vec[0].length();
-    string command2 = "select id,written_grade,interview_grade,final_grade from Grade_Table where Dno='" + vec[0].substr( 0, len-1 ) + "'order by final_grade desc;";
+    string command2 = "select id,written_grade,interview_grade,final_grade from Grade_Table where Dno='" + vec[0].substr( 0, len-1 ) + "'order by final_grade desc";
     // cout << "command2:" << command2 << endl;
+    //cout << command1 << command2 << endl;
     db.print( command2 );
 }
 

@@ -36,7 +36,7 @@ void gradeIn::print() {
                     <body>\
                         <div class=\"mylittle\">\
                             <center><font>第" + (string)row_num + "行信息有误！</font><br>\
-                            <a href=\"http://localhost/gradeIn_1.html\">返回</a></center>\
+                            <a href=\"http://192.168.1.102/gradeIn_1.html\">返回</a></center>\
                         </div>\
                     </body>\
                 </html>";
@@ -61,7 +61,7 @@ void gradeIn::print() {
                         <body>\
                             <div class=\"mylittle\">\
                                 <center><font>成绩提交成功！</font><br>\
-                                <a href=\"http://localhost/gradeIn_1.html\">返回</a></center>\
+                                <a href=\"http://192.168.1.102/teacher.html\">返回</a></center>\
                             </div>\
                         </body>\
                     </html>";
@@ -101,7 +101,7 @@ int gradeIn::addTo_gradeTable() {
             char score3[3]; 
             std::sprintf( score3, "%d", score );
             // cout << sno + " " << name + " " << score1 + " " << score2 << " " << score3 << endl;
-            string command = "insert into Grade_Table values('" + sno + "'," + "4," + score1 + "," + score2 + "," + score3 + ");";
+            string command = "insert into Grade_Table values('" + sno + "'," + "2," + score1 + "," + score2 + "," + score3 + ");";
             db.comd( command );
         }
         ++j;

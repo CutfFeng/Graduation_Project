@@ -2,6 +2,7 @@
 #include "MysqlDB.h"
 #include <sstream>
 #include <unistd.h>
+#include <time.h>
 
  log_in::log_in() {
     //printf("content-type:text/html;charset=gb2312\n\n");
@@ -11,6 +12,7 @@
     //printf( "data=%s\n",data );
     len=atoi(data);
     fgets(data,len+1,stdin);
+    // cout << data;
     //fit = false;
  }
 
@@ -21,11 +23,11 @@ log_in::~log_in(){
 void log_in::match( ) {
     int ret;
     //long len = atoi( data );
-    //cout << "data=" << data << endl;
+    // cout << "data=" << data << endl;
     char a1[10] = {""};
     char b1[30] = {""};
-    ret = sscanf(data,"account=%8s&pwd=%s",a1,b1);
-    //cout << "a1:" << (string)a1 << '\t' << "b1:" << b1 << endl;
+    ret = sscanf(data,"account=%8s&pass_word=%s",a1,b1);
+    // cout << "a1:" << (string)a1 << '\t' << "b1:" << b1 << endl;
     MysqlDB db;
     db.connect( "localhost", "root", "", "test" ); 
     string command = "select * from Account_Table where id=\"" + (string)a1 + "\";";
@@ -55,6 +57,8 @@ void log_in::match( ) {
         //匹配
         string a2 = a1;
         string b2 = b1;
+
+        // cout << ss[0] << a2 << "ss[1]" << ss[1] << "b2" << b2;
         if ( ss[0] == a2 && ss[1] == b2 ){
             if ( a2 == "xyjsjzzy" ){
                 string s = "<!DOCTYPE html>\
@@ -144,11 +148,11 @@ void log_in::match( ) {
                         <div class=\"top_nav\">\
                             <div class=\"top_left\">\
                                 <font class=\"xtmc\">西安邮电大学转专业系统</font>\
-                                <a href=\"\">成绩录入</a>\
-                                <a href=\"\">信息发布</a>\
+                                <a href=\"http://192.168.1.102:80/gradeIn_1.html\">成绩录入</a>\
+                                <a href=\"http://192.168.1.102:80/info.html\">信息发布</a>\
                             </div>\
                             <div class=\"top_right\">\
-                                <a href=\"http://localhost/login.html\">登陆</a>\
+                                <a href=\"http://192.168.1.102:80/login.html\">登陆</a>\
                             </div>\
                         </div>\
                     </div>\
@@ -167,7 +171,21 @@ void log_in::match( ) {
                     </div>\
                     </body>\
                 </html>" ;
-                cout << s << endl;;
+                //获取日期
+                time_t t = time(0); 
+                char tmp[32] = {};
+                strftime( tmp, sizeof(tmp), "%Y-%m-%d %H:%M:%S",localtime(&t) );
+                string time = string( tmp );
+                time = time.substr( 0,4 );
+                //cout << time << endl;
+                string command = "select * from Plan_Table where year=" + time + ";";
+                vector <string>vec;
+                bool b = db.get_row_string( vec, command );
+                if ( b == false ) {
+                    cout << "请更新今年的招生计划! 将数据记录到\"Plan_Table\"数据表中!" << endl;
+                }
+                else
+                    cout << s << endl;;
             }
             else{
                 string s = "<!DOCTYPE html>\
@@ -257,12 +275,12 @@ void log_in::match( ) {
                             <div class=\"top_nav\">\
                                 <div class=\"top_left\">\
                                     <font class=\"xtmc\">西安邮电大学转专业系统</font>\
-                                    <a href=\"http://localhost/submit.html\">报名入口</a>\
-                                    <a href=\"\">成绩查询</a>\
-                                    <a href=\"\">补修课程表</a>\
+                                    <a href=\"http://192.168.1.102:80/submit.html\">报名入口</a>\
+                                    <a href=\"http://192.168.1.102:80/sel_grade.html\">成绩查询</a>\
+                                    <a href=\"http://192.168.1.102:80/sel_class.html\">补修课程表</a>\
                                 </div>\
                                 <div class=\"top_right\">\
-                                    <a href=\"http://localhost/login.html\">登陆</a>\
+                                    <a href=\"http://192.168.1.102:80/login.html\">登陆</a>\
                                 </div>\
                             </div>\
                         </div>\
@@ -303,7 +321,7 @@ void log_in::match( ) {
                 <body>\
                     <div class=\"mylittle\">\
                         <center><font>账号或密码错误！</font><br>\
-                        <a href=\"http://localhost/login.html\">重新登陆</a></center>\
+                        <a href=\"http://192.168.1.102/login.html\">重新登陆</a></center>\
                     </div>\
                 </body>\
             </html>";
@@ -329,7 +347,7 @@ void log_in::match( ) {
                 <body>\
                     <div class=\"mylittle\">\
                         <center><font>该用户不存在！</font><br>\
-                        <a href=\"http://localhost/login.html\">重新登陆</a></center>\
+                        <a href=\"http://192.168.1.102/login.html\">重新登陆</a></center>\
                     </div>\
                 </body>\
             </html>";

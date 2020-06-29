@@ -112,6 +112,17 @@
             background-color: #FFE4E1;
         }
     </style>
+    <script>
+        var obj = document.getElementById('btn');
+        var psw = document.getElementById('pass_word');
+        obj.onclick = function(){
+            if(psw.getAttribute('type') == 'text'){
+                psw.setAttribute('type','password')    
+            }else{
+                psw.setAttribute('type','text')    
+            }
+        }
+    </script>
 </head>
 
 <body>
@@ -135,7 +146,9 @@
                 </div>
                 <div class="input-group mystylepas">
                     <span class="input-group-addon" id="sizing-addon2">密码</span>
-                    <input type="text" class="form-control" name="pwd" placeholder="请输入密码" aria-describedby="sizing-addon2">
+                    <input id="pass_word" name="pass_word" type="password" class="form-control" placeholder="请输入密码" aria-describedby="basic-addon1"> 
+                    
+                    <!-- <input type="password" class="form-control" name="pwd" placeholder="请输入密码" aria-describedby="sizing-addon2"> -->
                 </div>
                 <div class="forgetpas"><a>忘记密码了？</a></div>
                 <div>

@@ -129,8 +129,16 @@ void submit::addTo_apptable( submit sb, string new_Dno ) {
     sprintf( avegrade, "%d", ave );
 
     //将数据插入到申请表中
-    string command4 = "insert into Application_Table values('" + id + "'," + new_Dno[0] + "," + avegrade + "," + "1);";
-    db.comd( command4 );
+    string command5 = "select grade from Plan_Table where Dno=" + new_Dno + ";";
+    int grade = db.get_row_int( command5 );
+    if ( grade <= ave && math >= 60 && english >= 60 && algebra >= 60 ) {
+        string command4 = "insert into Application_Table values('" + id + "'," + new_Dno[0] + "," + avegrade + "," + "1);";
+        db.comd( command4 );
+    }
+    else {
+        string command4 = "insert into Application_Table values('" + id + "'," + new_Dno[0] + "," + avegrade + "," + "0);";
+        db.comd( command4 );
+    }
 
     //降序排列
     // string command5 = "select * from Application_Table order by avegrade_ema desc;";
@@ -231,7 +239,7 @@ void submit::addTo_submittable( submit sb ){
                     <body>\
                         <div class=\"mylittle\">\
                             <center><font>报名信息提交成功！</font><br>\
-                            <a href=\"http://localhost/student.html\">返回</a></center>\
+                            <a href=\"http://192.168.1.102/student.html\">返回</a></center>\
                         </div>\
                     </body>\
                 </html>";
@@ -261,7 +269,7 @@ void submit::addTo_submittable( submit sb ){
                     <body>\
                         <div class=\"mylittle\">\
                             <center><font>报名信息修改成功！</font><br>\
-                            <a href=\"http://localhost/student.html\">返回</a></center>\
+                            <a href=\"http://192.168.1.102/student.html\">返回</a></center>\
                         </div>\
                     </body>\
                 </html>";
